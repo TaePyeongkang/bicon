@@ -26,7 +26,7 @@
     <string notr="true"/>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QPushButton" name="home1">
@@ -497,8 +497,8 @@
     <widget class="QStackedWidget" name="stackedWidget_4">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>350</y>
+       <x>240</x>
+       <y>340</y>
        <width>761</width>
        <height>80</height>
       </rect>
@@ -546,20 +546,20 @@
         <string>퇴실</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="enter_btn_2">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>10</y>
+         <width>151</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>입실</string>
+       </property>
+      </widget>
      </widget>
-    </widget>
-    <widget class="QPushButton" name="enter_btn_2">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>360</y>
-       <width>151</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>입실</string>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="page_4">
@@ -620,6 +620,11 @@
      </property>
      <column>
       <property name="text">
+       <string>구분</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
        <string>날짜</string>
       </property>
      </column>
@@ -633,6 +638,24 @@
        <string>내용</string>
       </property>
      </column>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_10">
+    <widget class="QLabel" name="label_19">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>50</y>
+       <width>121</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 28pt &quot;Arial&quot;;</string>
+     </property>
+     <property name="text">
+      <string>교수</string>
+     </property>
     </widget>
    </widget>
   </widget>
