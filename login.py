@@ -28,31 +28,36 @@ class Login(QWidget, form_class):
         self.enter_btn_7.clicked.connect(self.Back)
         self.logyn = False
         self.calendarWidget.clicked.connect(self.calwrite)
-        # self.lineEdit.textChanged.connect(self.add_text)
+        self.plus.clicked.connect(self.add_time)
 
-    # def add_text(self):
-    #     self.lineEdit.setText(self.lineEdit.text())
-    #     print(self.lineEdit.text())
-    #     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='calendar',
-    #                            charset='utf8')
-    #     cursor = conn.cursor()
-    #
-    #     cursor.execute(f"INSERT INTO calendar set  = '{self.time}' where 번호 = {self.result[0][0]}")
-    #     self.result = cursor.fetchall()
-    #     conn.close()
-    def calwrite(self):
-        self.cal = self.calendarWidget.selectedDate()
-        self.full = (str(self.cal.year()) + '-' + str(self.cal.month()) + '-' + str(self.cal.day()))
-        print(self.full)
+    def add_time(self):
         self.line = self.lineEdit.text()
-        print(self.line)
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='calendar',
+
+        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
                                    charset='utf8')
         cursor = conn.cursor()
-        cursor.execute(f"select * from calendar")
-        self.calresult = cursor.fetchall()
-        print(self.calresult)
+        cursor.execute(
+            f"INSERT INTO calendar (번호,이름,내용,날짜) VALUES ('{(self.result[0][0])}','{self.result[0][1]}','{self.line}','{self.date}')")
+        cursor.execute(f"SELECT * FROM calendar where 날짜 = '{self.date}'")
+        self.a = cursor.fetchall()
+        conn.commit()
         conn.close()
+        # print(self.a,'날짜별로 저장된값 출력')
+        # print(len(self.a),'저장된값 개수 파악')
+        # print(self.a[0])
+        # print(len(self.a[0]))
+        Row = 0
+        self.tableWidget.setRowCount(len(self.a))
+        for i in self.a:
+            # print(i,'해당날짜 db내용 전부 출력')
+            self.tableWidget.setItem(Row, 0, QTableWidgetItem(i[3]))    # 날짜
+            self.tableWidget.setItem(Row, 1, QTableWidgetItem(i[1]))    # 이름
+            self.tableWidget.setItem(Row, 2, QTableWidgetItem(i[2]))    # 내용
+            Row += 1
+            # print(Row,'로우값에 따른 추가 반영 )
+    def calwrite(self):
+        self.cal = self.calendarWidget.selectedDate()
+        self.date = (str(self.cal.year()) + '-' + str(self.cal.month()) + '-' + str(self.cal.day()))
 
 
     def MoveLoginPage(self):                        # 로그인 페이지로 이동하는 함수

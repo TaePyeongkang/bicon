@@ -609,15 +609,30 @@
       <string>일정추가</string>
      </property>
     </widget>
-    <widget class="QListWidget" name="listWidget">
+    <widget class="QTableWidget" name="tableWidget">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>490</y>
-       <width>871</width>
-       <height>271</height>
+       <y>480</y>
+       <width>861</width>
+       <height>281</height>
       </rect>
      </property>
+     <column>
+      <property name="text">
+       <string>날짜</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>이름</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>내용</string>
+      </property>
+     </column>
     </widget>
    </widget>
   </widget>
