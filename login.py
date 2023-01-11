@@ -50,10 +50,11 @@ class Login(QWidget, form_class):
         Row = 0
         self.tableWidget.setRowCount(len(self.a))
         for i in self.a:
-            # print(i,'해당날짜 db내용 전부 출력')
-            self.tableWidget.setItem(Row, 0, QTableWidgetItem(i[3]))    # 날짜
-            self.tableWidget.setItem(Row, 1, QTableWidgetItem(i[1]))    # 이름
-            self.tableWidget.setItem(Row, 2, QTableWidgetItem(i[2]))    # 내용
+            print(i,'해당날짜 db내용 전부 출력')
+            self.tableWidget.setItem(Row, 0, QTableWidgetItem(i[4]))    # 구분
+            self.tableWidget.setItem(Row, 1, QTableWidgetItem(i[3]))    # 날짜
+            self.tableWidget.setItem(Row, 2, QTableWidgetItem(i[1]))    # 이름
+            self.tableWidget.setItem(Row, 3, QTableWidgetItem(i[2]))    # 내용
             Row += 1
             # print(Row,'로우값에 따른 추가 반영 )
     def calwrite(self):
