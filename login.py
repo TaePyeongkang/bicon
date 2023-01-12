@@ -259,7 +259,7 @@ class Login(QWidget, form_class):
         cursor = conn.cursor()
         # # 데이터 추가하기
         # cursor.execute(f"update beacon set 입실시간 = '{self.time}', 출석여부 = '{'O'}' where 번호 = {self.result[0][1]}")
-        cursor.execute(f"insert into attandence_check (출석시간,날짜) values ('{(self.time)}','{(self.day)}'")
+        cursor.execute(f"insert into attandence_check (출석시간,날짜) values ('{(self.time)}','{(self.day)}')")
 
 
 
