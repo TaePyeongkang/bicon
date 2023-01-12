@@ -37,9 +37,42 @@ class Login(QWidget, form_class):
         self.dm_send.clicked.connect(self.sending_dm)
         self.dm_text.returnPressed.connect(self.sending_dm)
         self.inquire.clicked.connect(self.dm_inquire)
-        self.attend_2.clicked.connect(self.attend_check)
+        self.attend_2.clicked.connect(self.attandence_check_page)
+        self.pushButton.clicked.connect(self.attandence_check)
 
-    def attend_check(self):
+    def attandence_check_page(self):
+        self.stackedWidget.setCurrentIndex(6)
+    def attandence_check(self):
+
+        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+                               charset='utf8')
+        cursor = conn.cursor()
+        # # 데이터 추가하기
+        cursor.execute(f"select * from attandence_check where 이름 = '{self.result[0][2]}'")
+        # DB 저장
+        conn.commit()
+        # DB 닫기
+        conn.close()
+        self.check_attandence = cursor.fetchall()
+        print(self.check_attandence)
+        print('----------------------------------------------------------------------------------')
+        Row = 0
+        self.tableWidget_2.setRowCount(len(self.check_attandence))
+        for f in self.check_attandence:
+            # print(f,'해당날짜 db내용 전부 출력')
+            self.tableWidget_2.setItem(Row, 0, QTableWidgetItem(f[10]))  # 이름
+            self.tableWidget_2.setItem(Row, 1, QTableWidgetItem(f[4]))   # 결석
+            self.tableWidget_2.setItem(Row, 2, QTableWidgetItem(f[0]))   # 출석시간
+            self.tableWidget_2.setItem(Row, 3, QTableWidgetItem(f[1]))   # 퇴실시간
+            self.tableWidget_2.setItem(Row, 4, QTableWidgetItem(f[2]))   # 외출시간
+            self.tableWidget_2.setItem(Row, 5, QTableWidgetItem(f[3]))   # 복귀시간
+            self.tableWidget_2.setItem(Row, 6, QTableWidgetItem(f[5]))   # 출석일
+            self.tableWidget_2.setItem(Row, 7, QTableWidgetItem(f[6]))   # 지각
+            self.tableWidget_2.setItem(Row, 8, QTableWidgetItem(f[7]))   # 조퇴
+            self.tableWidget_2.setItem(Row, 9, QTableWidgetItem(f[8]))   # 외출
+            self.tableWidget_2.setItem(Row, 10, QTableWidgetItem(f[9]))  # 결석
+            Row += 1
+            # print(Row,'로우값에 따른 추가 반영')
 
     def dm_inquire(self):               # 교수만 메시지 조회하는 매서드
         if self.logyn == True:
@@ -113,7 +146,7 @@ class Login(QWidget, form_class):
             self.dm_table.setItem(Row, 3, QTableWidgetItem(x[3]))  # 시간
             Row += 1
             # print(Row,'로우값에 따른 추가 반영 )
-    def add_time(self):             # 캘린더에 일정 추가하는 함수
+    def add_time(self):                     # 캘린더에 일정 추가하는 함수
         self.line = self.lineEdit.text()
 
         conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
@@ -215,14 +248,21 @@ class Login(QWidget, form_class):
 
     def attend_check(self):                                                                                    # 입실 체크 하는 함수
         self.stackedWidget_5.setCurrentIndex(0)
+        self
         self.now = datetime.now()
-        self.time = self.now.strftime('%Y-%m-%d %H:%M')
+        # self.time = self.now.strftime('%Y-%m-%d %H:%M')
+        self.time = self.now.strftime('%H:%M')
+        self.day = self.now.strftime('%Y-%m-%d')
         print(self.time)
         conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
-        cursor.execute(f"update beacon set 입실시간 = '{self.time}' where 번호 = {self.result[0][1]}")
+        # cursor.execute(f"update beacon set 입실시간 = '{self.time}', 출석여부 = '{'O'}' where 번호 = {self.result[0][1]}")
+        cursor.execute(f"insert into attandence_check (출석시간,날짜) values ('{(self.time)}','{(self.day)}'")
+
+
+
         # DB 저장
         conn.commit()
         # DB 닫기
@@ -239,7 +279,7 @@ class Login(QWidget, form_class):
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
-        cursor.execute(f"update beacon set 퇴실시간 = '{self.time}' where 번호 = {self.result[0][1]}")
+        cursor.execute(f"update beacon set 퇴실시간 = '{self.time}', 퇴실여부 = '{'O'}' where 번호 = {self.result[0][1]}")
         # DB 저장
         conn.commit()
         # DB 닫기
@@ -254,7 +294,7 @@ class Login(QWidget, form_class):
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
-        cursor.execute(f"update beacon set 외출시간 = '{self.time}' where 번호 = {self.result[0][1]}")
+        cursor.execute(f"update beacon set 외출시간 = '{self.time}', 외출여부 = '{'O'}' where 번호 = {self.result[0][1]}")
         # DB 저장
         conn.commit()
         # DB 닫기
@@ -272,7 +312,7 @@ class Login(QWidget, form_class):
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
-        cursor.execute(f"update beacon set 복귀시간 = '{self.time}' where 번호 = {self.result[0][1]}")
+        cursor.execute(f"update beacon set 복귀시간 = '{self.time}', 복귀여부 = '{'O'}' where 번호 = {self.result[0][1]}")
         # DB 저장
         conn.commit()
         # DB 닫기
