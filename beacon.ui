@@ -1126,6 +1126,19 @@
       <string>조회</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="home4_4">
+     <property name="geometry">
+      <rect>
+       <x>900</x>
+       <y>20</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>home</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

@@ -22,6 +22,7 @@ class Login(QWidget, form_class):
         self.home4.clicked.connect(self.MainPage)
         self.home4_3.clicked.connect(self.MainPage)
         self.home4_2.clicked.connect(self.MainPage)
+        self.home4_4.clicked.connect(self.MainPage)
         self.attend.clicked.connect(self.Enter_check)
         self.schedule.clicked.connect(self.Schedule_check)
         self.logbtn.clicked.connect(self.Login)
@@ -40,11 +41,12 @@ class Login(QWidget, form_class):
         self.attend_2.clicked.connect(self.attandence_check_page)
         self.pushButton.clicked.connect(self.attandence_check)
 
+
     def attandence_check_page(self):
         self.stackedWidget.setCurrentIndex(6)
     def attandence_check(self):
 
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
@@ -80,7 +82,7 @@ class Login(QWidget, form_class):
                 self.stackedWidget.setCurrentIndex(4)
                 self.combo1 = self.comboBox_2.currentText()
                 self.combo = self.comboBox.currentText()
-                conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+                conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                        charset='utf8')
                 cursor = conn.cursor()
                 # cursor.execute(f"SELECT * FROM beacon where 아이디 = %s", self.id)
@@ -120,7 +122,7 @@ class Login(QWidget, form_class):
         self.combo = self.comboBox.currentText()
         print(self.combo)
         # print(self.dm,'입력한값 확인')
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                charset='utf8')
         cursor = conn.cursor()
         # cursor.execute(f"SELECT * FROM beacon where 아이디 = %s", self.id)
@@ -149,7 +151,7 @@ class Login(QWidget, form_class):
     def add_time(self):                     # 캘린더에 일정 추가하는 함수
         self.line = self.lineEdit.text()
 
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                    charset='utf8')
         cursor = conn.cursor()
         cursor.execute(
@@ -212,7 +214,7 @@ class Login(QWidget, form_class):
         self.id = self.idtext.text()                                                                         # 입력한 값이 id
         self.pw = self.pwtext.text()                                                                         # 입력한 값이 pw
 
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                charset='utf8')                                                                # db 연결
         cursor = conn.cursor()
 
@@ -251,15 +253,15 @@ class Login(QWidget, form_class):
         self
         self.now = datetime.now()
         # self.time = self.now.strftime('%Y-%m-%d %H:%M')
-        self.time = self.now.strftime('%H:%M')
+        self.time = self.now.strftime('%H:%M:%S')
         self.day = self.now.strftime('%Y-%m-%d')
         print(self.time)
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
         # cursor.execute(f"update beacon set 입실시간 = '{self.time}', 출석여부 = '{'O'}' where 번호 = {self.result[0][1]}")
-        cursor.execute(f"insert into attandence_check (출석시간,날짜) values ('{(self.time)}','{(self.day)}')")
+        cursor.execute(f"insert into attandence_check (출석시간,날짜,이름) values ('{(self.time)}','{(self.day)}','{self.result[0][2]}')")
 
 
 
@@ -274,12 +276,16 @@ class Login(QWidget, form_class):
 
     def attend_out(self):                                                                                      # 퇴실 체크하는 함수
         self.now = datetime.now()
-        self.time = self.now.strftime('%Y-%m-%d %H:%M')
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+        # self.time = self.now.strftime('%Y-%m-%d %H:%M')
+        self.time = self.now.strftime('%H:%M:%S')
+        self.day = self.now.strftime('%Y-%m-%d')
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
-        cursor.execute(f"update beacon set 퇴실시간 = '{self.time}', 퇴실여부 = '{'O'}' where 번호 = {self.result[0][1]}")
+        cursor.execute(f"update attandence_check set 퇴실시간 = '{self.time}' where 이름 = '{self.result[0][2]}' and 날짜 = '{self.day}'")
+        # cursor.execute(
+            # f"insert into attandence_check (출석시간,날짜,이름) values ('{(self.time)}','{(self.day)}','{self.result[0][2]}')")
         # DB 저장
         conn.commit()
         # DB 닫기
@@ -287,14 +293,18 @@ class Login(QWidget, form_class):
         QMessageBox.information(self, "퇴실", f"{self.result[0][2]}님 퇴실하셨습니다")
         self.finish_time.setText(self.now.strftime('%Y-%m-%d %H:%M'))
         self.stackedWidget_4.setCurrentIndex(2)
+        self.stackedWidget_5.setCurrentIndex(1)
     def outing(self):                                                                                           # 외출체크하는 함수
         self.now = datetime.now()
-        self.time = self.now.strftime('%Y-%m-%d %H:%M')
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+        # self.time = self.now.strftime('%Y-%m-%d %H:%M')
+        self.time = self.now.strftime('%H:%M:%S')
+        self.day = self.now.strftime('%Y-%m-%d')
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
-        cursor.execute(f"update beacon set 외출시간 = '{self.time}', 외출여부 = '{'O'}' where 번호 = {self.result[0][1]}")
+        # cursor.execute(f"update beacon set 외출시간 = '{self.time}', 외출여부 = '{'O'}' where 번호 = {self.result[0][1]}")
+        cursor.execute(f"update attandence_check set 외출시간 = '{self.time}' where 이름 = '{self.result[0][2]}' and 날짜 = '{self.day}'")
         # DB 저장
         conn.commit()
         # DB 닫기
@@ -307,12 +317,15 @@ class Login(QWidget, form_class):
 
     def Back(self):                                                                                             # 복귀체크하는 함수
         self.now = datetime.now()
-        self.time = self.now.strftime('%Y-%m-%d %H:%M')
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', password='00000000', db='beacon',
+        # self.time = self.now.strftime('%Y-%m-%d %H:%M')
+        self.time = self.now.strftime('%H:%M:%S')
+        self.day = self.now.strftime('%Y-%m-%d')
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                charset='utf8')
         cursor = conn.cursor()
         # # 데이터 추가하기
-        cursor.execute(f"update beacon set 복귀시간 = '{self.time}', 복귀여부 = '{'O'}' where 번호 = {self.result[0][1]}")
+        # cursor.execute(f"update beacon set 복귀시간 = '{self.time}', 복귀여부 = '{'O'}' where 번호 = {self.result[0][1]}")
+        cursor.execute(f"update attandence_check set 복귀시간 = '{self.time}' where 이름 = '{self.result[0][2]}' and 날짜 = '{self.day}'")
         # DB 저장
         conn.commit()
         # DB 닫기
