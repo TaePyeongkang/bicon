@@ -26,7 +26,7 @@
     <string notr="true"/>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QPushButton" name="home1">
@@ -523,7 +523,7 @@
     <widget class="QPushButton" name="home3">
      <property name="geometry">
       <rect>
-       <x>870</x>
+       <x>850</x>
        <y>20</y>
        <width>75</width>
        <height>23</height>

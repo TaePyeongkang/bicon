@@ -272,7 +272,7 @@ class Login(QWidget, form_class):
         QMessageBox.information(self, "입실", f"{self.result[0][2]}님 입실하셨습니다")
         self.enter_time.setText(self.now.strftime('%Y-%m-%d %H:%M'))
         self.stackedWidget_4.setCurrentIndex(1)
-
+####
 
     def attend_out(self):                                                                                      # 퇴실 체크하는 함수
         self.now = datetime.now()
