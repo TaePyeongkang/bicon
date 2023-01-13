@@ -26,7 +26,7 @@
     <string notr="true"/>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>7</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QPushButton" name="home1">
@@ -543,7 +543,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page_9">
       <widget class="QPushButton" name="enter_btn_2">
@@ -602,7 +602,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page_14">
       <widget class="QPushButton" name="enter_btn">
@@ -1048,31 +1048,6 @@
      </column>
      <column>
       <property name="text">
-       <string>날짜</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>출석시간</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>퇴실시간</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>외출시간</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>복귀시간</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
        <string>출석일</string>
       </property>
      </column>
@@ -1137,6 +1112,177 @@
      </property>
      <property name="text">
       <string>home</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_18">
+    <widget class="QLabel" name="label_43">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>310</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>조퇴</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_44">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>190</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>출석</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="enter_time_3">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>197</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="finish_time_3">
+     <property name="geometry">
+      <rect>
+       <x>535</x>
+       <y>200</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_45">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>310</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>외출</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="back_time_3">
+     <property name="geometry">
+      <rect>
+       <x>536</x>
+       <y>320</y>
+       <width>201</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="out_time_3">
+     <property name="geometry">
+      <rect>
+       <x>333</x>
+       <y>317</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_46">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>190</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>지각</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_47">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>380</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>결석</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="back_time_4">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>390</y>
+       <width>201</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="home3_3">
+     <property name="geometry">
+      <rect>
+       <x>880</x>
+       <y>40</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>home</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>750</x>
+       <y>160</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>조회하기</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>290</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>수당계산</string>
      </property>
     </widget>
    </widget>
