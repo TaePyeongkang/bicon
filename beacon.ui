@@ -26,7 +26,7 @@
     <string notr="true"/>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>8</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QPushButton" name="home1">
@@ -608,7 +608,7 @@
       <widget class="QPushButton" name="enter_btn">
        <property name="geometry">
         <rect>
-         <x>30</x>
+         <x>23</x>
          <y>10</y>
          <width>151</width>
          <height>61</height>
@@ -1283,6 +1283,53 @@
      </property>
      <property name="text">
       <string>수당계산</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_19">
+    <widget class="QLabel" name="label_22">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>140</y>
+       <width>311</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 28pt &quot;Arial&quot;;</string>
+     </property>
+     <property name="text">
+      <string>금월의 수당금액</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_23">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>320</y>
+       <width>971</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 28pt &quot;Arial&quot;;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="home3_4">
+     <property name="geometry">
+      <rect>
+       <x>880</x>
+       <y>30</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>home</string>
      </property>
     </widget>
    </widget>

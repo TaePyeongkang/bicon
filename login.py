@@ -24,6 +24,7 @@ class Login(QWidget, form_class):
         self.home4_2.clicked.connect(self.MainPage)
         self.home4_4.clicked.connect(self.MainPage)
         self.home3_3.clicked.connect(self.MainPage)
+        self.home3_4.clicked.connect(self.MainPage)
         self.attend.clicked.connect(self.Enter_check)
         self.schedule.clicked.connect(self.Schedule_check)
         self.logbtn.clicked.connect(self.Login)
@@ -42,10 +43,9 @@ class Login(QWidget, form_class):
         self.attend_2.clicked.connect(self.attandence_check_page)
         self.pushButton.clicked.connect(self.attandence_check)
         self.pushButton_3.clicked.connect(self.attandence_count)
-        # self.pushButton_3.clicked.connect(self.weekly_payout)
+        self.pushButton_4.clicked.connect(self.payout)
 
     def attandence_count(self):
-        # 출석
         conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                charset='utf8')
         cursor = conn.cursor()
@@ -60,8 +60,38 @@ class Login(QWidget, form_class):
         # print(self.chulcheck[0][11])
 
         # 출석시간[8],퇴실시간[9],출석일[11],지각[12],조퇴[13],,외출[14],결석[15],외출시간[16],복귀시간[17]
-        if self.result[0][7] < '09:20:59' and self.result[0][8] > '17:00:59':
-            # print('llllllllllllllllllllllllllllll')
+        # 결석
+        if self.result[0][7] == None or self.result[0][8] == None:
+            print('결석체크')
+            conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
+                                   charset='utf8')
+            cursor = conn.cursor()
+            # # 데이터 추가하기
+            cursor.execute(
+                f"UPDATE beacon SET 결석 = '{self.result[0][15] + 1}' WHERE 번호 = '{self.result[0][1]}'")
+            cursor.execute(
+                f"insert into attadence (결석,날짜,이름) values ('O','{self.result[0][18]}','{self.result[0][2]}')")
+            # DB 저장
+            conn.commit()
+            # DB 닫기
+            conn.close()
+
+            conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
+                                   charset='utf8')
+            cursor = conn.cursor()
+
+            # # 데이터 추가하기
+            cursor.execute(f"UPDATE beacon SET 출석시간 = NULL ,퇴실시간 = NULL,외출시간 = NULL, 복귀시간 = NULL 날짜 = NULL WHERE 번호 = '{self.result[0][1]}'")
+            # DB 저장
+            conn.commit()
+            # DB 닫기
+            conn.close()
+
+            # 출석
+        elif self.result[0][7] < '09:20:59' and self.result[0][8] > '17:20:59' and self.result[0][16] == None and self.result[0][17] == None:
+
+            print('출석 체크')
+
             conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                    charset='utf8')
             cursor = conn.cursor()
@@ -72,6 +102,7 @@ class Login(QWidget, form_class):
             # DB 저장
             conn.commit()
             # DB 닫기
+
             conn.close()
 
             conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
@@ -79,41 +110,49 @@ class Login(QWidget, form_class):
             cursor = conn.cursor()
 
             # # 데이터 추가하기
-            cursor.execute(f"UPDATE beacon SET 출석시간 = NULL ,퇴실시간 = NULL, 날짜 = NULL WHERE 번호 = '{self.result[0][1]}'")
+            cursor.execute(f"UPDATE beacon SET 출석시간 = NULL ,퇴실시간 = NULL, 날짜 = NULL, 외출시간 = NULL, 복귀시간 = NULL WHERE 번호 = '{self.result[0][1]}'")
             # DB 저장
             conn.commit()
             # DB 닫기
             conn.close()
 
+
+
             # 지각
-        elif self.result[0][7] > '09:20:59' and self.result[0][8] > '17:00:59':
+        elif self.result[0][7] > '09:20:59' and self.result[0][8] > '17:20:59':
             # print('123123')
+            time_5 = datetime.strptime(self.result[0][8], "%H:%M:%S")
+            time_6 = datetime.strptime('09:20:59', "%H:%M:%S")
+            time_interval3 = time_5 - time_6
+            print(time_interval3.seconds, '지각 시간초 단위 계산')
             conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                    charset='utf8')
             cursor = conn.cursor()
             # # 데이터 추가하기
             cursor.execute(f"UPDATE beacon SET 출석일 = '{self.result[0][11] + 1}', 지각 = '{self.result[0][12] + 1}' WHERE 번호 = '{self.result[0][1]}'")
             cursor.execute(
-                f"insert into attadence (지각,날짜,이름) values ('O','{self.result[0][18]}','{self.result[0][2]}')")
+                f"insert into attadence (지각,날짜,이름,초계산) values ('O','{self.result[0][18]}','{self.result[0][2]}','{time_interval3}')")
             # DB 저장
             conn.commit()
             # DB 닫기
             conn.close()
 
-            conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
-                                   charset='utf8')
-            cursor = conn.cursor()
-
             # # 데이터 추가하기
-            cursor.execute(f"UPDATE beacon SET 출석시간 = NULL ,퇴실시간 = NULL, 날짜 = NULL WHERE 번호 = '{self.result[0][1]}'")
+            cursor.execute(f"UPDATE beacon SET 출석시간 = NULL ,퇴실시간 = NULL, 날짜 = NULL, 외출시간 = NULL, 복귀시간 = NULL WHERE 번호 = '{self.result[0][1]}'")
             # DB 저장
             conn.commit()
             # DB 닫기
             conn.close()
 
         # 외출
-        elif self.result[0][7] < '09:20:59' and self.result[0][8] > '17:20:59' and  self.result[0][16] == None and self.result[0][17] == None:
+        elif self.result[0][7] < '09:20:59' and self.result[0][8] > '17:20:59' and self.result[0][16] != None and self.result[0][17] != None:
             print('123123')
+            time_1 = datetime.strptime(self.result[0][16], "%H:%M:%S")
+            time_2 = datetime.strptime(self.result[0][17], "%H:%M:%S")
+            #
+            time_interval1 = time_2 - time_1
+            print(time_interval1.seconds, '외출 시간초 단위 계산')
+            # print(777777777777777777777777)
             conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
                                    charset='utf8')
             cursor = conn.cursor()
@@ -121,10 +160,47 @@ class Login(QWidget, form_class):
             cursor.execute(
                 f"UPDATE beacon SET 출석일 = '{self.result[0][11] + 1}', 외출 = '{self.result[0][14] + 1}' WHERE 번호 = '{self.result[0][1]}'")
             cursor.execute(
-                f"insert into attadence (외출,날짜,이름) values ('O','{self.result[0][18]}','{self.result[0][2]}')")
+                f"insert into attadence (외출,날짜,이름,초계산) values ('O','{self.result[0][18]}','{self.result[0][2]}','{time_interval1}')")
+            # cursor.execute(f"select * from attadence where 이름 = '{self.result[0][2]}'")
+            # DB 저장
+            # self.chchchc = cursor.fetchall()
+            conn.commit()
+            # DB 닫기
+            conn.close()
+            # print(self.chchchc, '확인작업')
+            # print(self.chchchc[0][7], '확인작업')
+            # print(self.chchchc[0][7][0],'확인작업')
+
+            conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
+                                   charset='utf8')
+            cursor = conn.cursor()
+
+            # # 데이터 추가하기
+            cursor.execute(f"UPDATE beacon SET 출석시간 = NULL ,퇴실시간 = NULL, 날짜 = NULL, 외출시간 = NULL, 복귀시간 = NULL WHERE 번호 = '{self.result[0][1]}'")
             # DB 저장
             conn.commit()
             # DB 닫기
+            conn.close()
+
+            # 조퇴
+        elif self.result[0][7] < '09:20:59' and self.result[0][8] < '17:20:59':
+            time_3 = datetime.strptime(self.result[0][8], "%H:%M:%S")
+            time_4 = datetime.strptime('17:20:59', "%H:%M:%S")
+            #
+            time_interval2 = time_4 - time_3
+            print(time_interval2.seconds, '조퇴 시간초 단위 계산')
+            # print(777777777777777777777777)
+            conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
+                                   charset='utf8')
+            cursor = conn.cursor()
+            # # 데이터 추가하기
+            cursor.execute(
+                f"UPDATE beacon SET 출석일 = '{self.result[0][11] + 1}', 조퇴 = '{self.result[0][13] + 1}' WHERE 번호 = '{self.result[0][1]}'")
+            cursor.execute(
+                f"insert into attadence (조퇴,날짜,이름,초계산) values ('O','{self.result[0][18]}','{self.result[0][2]}','{time_interval2}')")
+
+            conn.commit()
+            # # DB 닫기
             conn.close()
 
             conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
@@ -138,16 +214,39 @@ class Login(QWidget, form_class):
             # DB 닫기
             conn.close()
 
-    # def weekly_payout(self):
-    #     conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
-    #                            charset='utf8')
-    #     cursor = conn.cursor()
-    #     # # 데이터 추가하기
-    #     cursor.execute(f"UPDATE beacon SET 출석시간 = NULL ,퇴실시간 = NULL, 날짜 = NULL WHERE 번호 = '{self.result[0][1]}'")
-    #     # DB 저장
-    #     conn.commit()
-    #     # DB 닫기
-    #     conn.close()
+
+
+    def payout(self):
+        self.stackedWidget.setCurrentIndex(8)
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
+                               charset='utf8')
+        cursor = conn.cursor()
+        # # 데이터 추가하기
+        cursor.execute(f"select * from beacon where 이름 = '{self.result[0][2]}'")
+        # DB 저장
+        conn.commit()
+        self.alllll = cursor.fetchall()
+        conn.close()
+        conn = pymysql.connect(host='10.10.21.119', port=3306, user='yh', password='00000000', db='beacon',
+                               charset='utf8')
+        cursor = conn.cursor()
+        # # 데이터 추가하기
+        cursor.execute(f"select * from attadence WHERE 이름 = '{self.result[0][2]}'")
+        # DB 저장
+        conn.commit()
+        # DB 닫기
+        self.money = cursor.fetchall()
+        conn.close()
+        # print(self.money)
+        # print(self.money[0][7])
+        # print(self.money[0][7][0],'앞자리')
+
+        asx = int(self.money[0][7][0])
+        # if asx != 0:
+        # print(type(asx))
+        asx += 1
+        # print(f"'{self.result[0][2]}'님 훈련수당은{(self.result[0][11]*12000)-(asx*1250)}원입니다")
+        self.label_23.setText(f"{self.result[0][2]}님 훈련수당은{(self.result[0][11]*10000)-(self.result[0][12]*asx*1250)-(self.result[0][13]*asx*1250)-(self.result[0][14]*asx*1250)}원입니다")
 
     def attandence_check_page(self):
         # 나는 존잘이다
@@ -388,7 +487,6 @@ class Login(QWidget, form_class):
 
     def attend_check(self):  # 입실 체크 하는 함수
         self.stackedWidget_5.setCurrentIndex(0)
-        self
         self.now = datetime.now()
         # self.time = self.now.strftime('%Y-%m-%d %H:%M')
         self.time = self.now.strftime('%H:%M:%S')
